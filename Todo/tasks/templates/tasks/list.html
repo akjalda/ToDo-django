@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    
+    <title>ToDO</title>
+
+
+    <style>
+
+        body{
+            background-color: azure;
+        }
+
+        input::placeholder {
+	        color: #d3d3d3;
+        }
+        input{
+            width: 100%;
+            padding: 12px 20px;
+        }
+        .task-items{
+            overflow: auto;
+            background-color: #8964b650;
+		    margin: 10px;
+		    padding: 20px;
+		    border-radius: 3px;
+		    font-size: 20px;
+		    box-shadow: 0px -1px 10px -4px rgba(0,0,0,0.75);
+        }
+
+    </style>
+    
+</head>
+<body>
+    
+    <div class="jumbotron">
+        <div class="d-flex justify-content-center">
+            <h1>To-Do List</h1>
+        </div>
+        <div class="container">
+            <form method="POST" action="/">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <div class="col-12 col-sm-10">
+                        {{form.title}}
+                    </div>
+                    <br>
+                    <div class="mt-2 col-4 offset-8 mt-sm-0 col-sm-2 offset-sm-0">
+                        <input class="btn btn-success btn-lg" type="submit" value="Add">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <h1>Your Tasks</h1>
+        </div>
+            {% for task in tasks %}
+                    <div class="task-items">
+                        <div class="row">
+                            <div class="col-12">
+                                {% if task.complete == True %}
+                                    <strike>{{task}}</strike>
+                                {% else %}
+                                    <span>{{task}}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-4 offset-4 col-sm-2 offset-sm-8">
+                                <a class="btn btn-primary btn-block" href="{% url 'update_task' task.id %}">Update</a>
+                            </div>
+                            <div class="col-4 col-sm-2">
+                                <a class="btn btn-danger btn-block" href="{% url 'delete' task.id %}">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+            {% endfor %}
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>
